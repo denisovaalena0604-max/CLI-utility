@@ -3,29 +3,25 @@ package main
 import (
 	"fmt"
 	"time"
+	"github.com/denisovaalena0604-max/CLI-utility/bins"
+// "github.com/denisovaalena0604-max/CLI-utility/api"
+// "github.com/denisovaalena0604-max/CLI-utility/file"
+// "github.com/denisovaalena0604-max/CLI-utility/storage"
 )
 
-type Bin struct {
-	ID        string
-	Private   bool
-	CreatedAt time.Time
-	Name      string
-}
-type BinList struct {
-	Bins []Bin
-}
 
-func NewBin(id string, private bool, name string) Bin {
-	return Bin{
+
+func NewBin(id string, private bool, name string) bins.Bin {
+	return bins.Bin{
 		ID:        id,
 		Private:   private,
 		CreatedAt: time.Now(),
 		Name:      name,
 	}
 }
-func NewBinList() BinList {
-	return BinList{
-		Bins: []Bin{},
+func NewBinList() bins.BinList {
+	return bins.BinList{
+		Bins: []bins.Bin{},
 	}
 }
 func main() {
