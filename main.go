@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"time"
+
 	"github.com/denisovaalena0604-max/CLI-utility/bins"
-// "github.com/denisovaalena0604-max/CLI-utility/api"
-// "github.com/denisovaalena0604-max/CLI-utility/file"
-// "github.com/denisovaalena0604-max/CLI-utility/storage"
+
+	// "github.com/denisovaalena0604-max/CLI-utility/api"
+	// "github.com/denisovaalena0604-max/CLI-utility/file"
+	"github.com/denisovaalena0604-max/CLI-utility/storage"
 )
-
-
 
 func NewBin(id string, private bool, name string) bins.Bin {
 	return bins.Bin{
@@ -19,24 +19,26 @@ func NewBin(id string, private bool, name string) bins.Bin {
 		Name:      name,
 	}
 }
-func NewBinList() bins.BinList {
-	return bins.BinList{
-		Bins: []bins.Bin{},
-	}
-}
+
 func main() {
-	binList := NewBinList()
 
-	
-	bin1 := NewBin("001", false, "Первый")
-	bin2 := NewBin("002", true, "Второй")
+	binList, err := storage.Load()
+	if err != nil {
+		fmt.Println("Ошибка загрузки:", err)
+		return
+	}
 
-	
-	binList.Bins = append(binList.Bins, bin1, bin2)
+	binList.Bins = append(binList.Bins,
+		NewBin("001", false, "Первый"),
+		NewBin("002", true, "Второй"),
+	)
 
-	
+	if err := storage.Save(binList); err != nil {
+		fmt.Println("Ошибка сохранения:", err)
+		return
+	}
+
 	fmt.Printf("Всего бинов: %d\n", len(binList.Bins))
-
 	for i, bin := range binList.Bins {
 		fmt.Printf("%d. ID=%s, Name=%s, Private=%t, Created=%s\n",
 			i+1, bin.ID, bin.Name, bin.Private, bin.CreatedAt.Format("15:04:05"))
